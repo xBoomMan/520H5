@@ -1,0 +1,8 @@
+{
+  "r2_buckets": [
+    {
+      "binding": "FORM_BUCKET",
+      "bucket_name": "form-submissions-invitation"
+    }
+  ]
+}
