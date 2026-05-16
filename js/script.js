@@ -116,7 +116,7 @@ async function saveToTxt(storeCode, storeName, phone) {
     try {
         console.log('正在提交到 /api/submit...');
         
-        const response = await fetch('/api/submit', {
+        const response = await fetch('https://h5.myoracle.us.ci/api/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
