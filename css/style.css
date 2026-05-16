@@ -53,12 +53,12 @@ html, body {
 }
 
 /* 背景图片配置 (用户可自行替换 ./img/bj.jpg) */
-.slide-1 { background-image: url('./img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #fff0e0; }
-.slide-2 { background-image: url('./img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #fff3e6; }
-.slide-3 { background-image: url('./img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffefdf; }
-.slide-4 { background-image: url('./img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffebd5; }
-.slide-5 { background-image: url('./img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffe8d4; }
-.slide-6 { background-image: url('./img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffe2c7; }
+.slide-1 { background-image: url('../img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #fff0e0; }
+.slide-2 { background-image: url('../img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #fff3e6; }
+.slide-3 { background-image: url('../img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffefdf; }
+.slide-4 { background-image: url('../img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffebd5; }
+.slide-5 { background-image: url('../img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffe8d4; }
+.slide-6 { background-image: url('../img/bj.jpg'); background-size: cover; background-position: center; background-repeat: no-repeat; background-color: #ffe2c7; }
 
 /* 内容卡片容器 */
 .page-content {
