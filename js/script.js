@@ -17,7 +17,14 @@ const swiper = new Swiper('.swiper', {
     speed: 400,
     keyboard: true
 });
-
+document.addEventListener("WeixinJSBridgeReady", function () {
+    const bgAudio = document.getElementById('bgAudio');
+    const musicToggle = document.getElementById('musicToggle');
+    bgAudio.play().then(() => {
+        musicToggle.classList.add('playing');
+        console.log("✅ 微信环境下自动播放成功");
+    }).catch(e => console.log("微信内播放失败:", e));
+}, false);
 // ======================= 倒计时 (活动开始 2026年5月18日 00:00:00) =======================
 const targetDate = new Date(2026, 4, 18, 0, 0, 0);
 
