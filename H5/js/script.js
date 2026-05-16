@@ -100,52 +100,32 @@ if (mapTrigger) {
     });
 }
 
-// ======================= 表单提交：保存到后端txt文件 =======================
-/**
- * 通过 AJAX POST 请求将预约数据发送到后端 save_booking.php
- * 后端负责将数据追加到 booking_records.txt 文件中
- */
+// 原代码中的 saveToTxt 函数替换为：
 async function saveToTxt(storeCode, storeName, phone) {
-    const now = new Date().toLocaleString('zh-CN', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false
-    });
-    const storeCodeField = storeCode && storeCode.trim() !== "" ? storeCode : "未填写";
-
-    // 构建要保存的数据行
-    const line = `${storeCodeField},${storeName},${phone},${now}\n`;
+    const formData = new FormData();
+    formData.append('storeCode', storeCode);
+    formData.append('storeName', storeName);
+    formData.append('phone', phone);
 
     try {
-        // 发送POST请求到后端
-        const response = await fetch('save_booking.php', {
+        const response = await fetch('/api/submit', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
-            },
-            body: 'data=' + encodeURIComponent(line)
+            body: formData
         });
-
         const result = await response.json();
-
         if (result.success) {
-            console.log("预约记录已保存到服务器:", line);
+            showToast("✅ 预约成功！感谢您的参与");
             return true;
         } else {
-            console.error("保存失败:", result.message);
-            // 降级方案：保存到 localStorage 并下载
-            return fallbackSaveToLocal(line);
+            showToast("❌ " + result.message, true);
+            return false;
         }
     } catch (error) {
-        console.error("网络错误，使用降级方案:", error);
-        return fallbackSaveToLocal(line);
+        console.error('提交失败:', error);
+        showToast("❌ 网络错误，请稍后重试", true);
+        return false;
     }
 }
-
 /**
  * 降级方案：保存到 localStorage 并提供下载
  */
