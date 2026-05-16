@@ -100,29 +100,54 @@ if (mapTrigger) {
     });
 }
 
-// ======================= 表单提交：保存到后端txt文件 =======================
+// 表单提交 - 保存到 R2
 async function saveToTxt(storeCode, storeName, phone) {
-    const formData = new FormData();
-    formData.append('storeCode', storeCode);
-    formData.append('storeName', storeName);
-    formData.append('phone', phone);
-
+    const now = new Date().toLocaleString('zh-CN');
+    const storeCodeField = storeCode && storeCode.trim() !== "" ? storeCode : "未填写";
+    
+    // 使用 JSON 格式发送
+    const requestBody = {
+        storeCode: storeCodeField,
+        storeName: storeName,
+        phone: phone,
+        timestamp: now
+    };
+    
     try {
+        console.log('正在提交到 /api/submit...');
+        
         const response = await fetch('/api/submit', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
         });
-        const result = await response.json();
-        if (result.success) {
-            showToast("✅ 预约成功！感谢您的参与");
+        
+        // 先获取响应文本，用于调试
+        const responseText = await response.text();
+        console.log('响应状态:', response.status);
+        console.log('响应内容:', responseText);
+        
+        // 尝试解析 JSON
+        let result;
+        try {
+            result = JSON.parse(responseText);
+        } catch (e) {
+            console.error('JSON 解析失败，原始响应:', responseText);
+            throw new Error(`服务器返回了无效的响应格式: ${responseText.substring(0, 100)}`);
+        }
+        
+        if (response.ok && result.success) {
+            showToast("✅ " + result.message);
             return true;
         } else {
-            showToast("❌ " + result.message, true);
+            showToast("❌ " + (result?.message || '提交失败，请重试'), true);
             return false;
         }
     } catch (error) {
         console.error('提交失败:', error);
-        showToast("❌ 网络错误，请稍后重试", true);
+        showToast("❌ 网络错误：" + error.message, true);
         return false;
     }
 }
