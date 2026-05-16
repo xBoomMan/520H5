@@ -102,52 +102,33 @@ if (mapTrigger) {
 
 // 表单提交 - 保存到 R2
 async function saveToTxt(storeCode, storeName, phone) {
-    const now = new Date().toLocaleString('zh-CN');
-    const storeCodeField = storeCode && storeCode.trim() !== "" ? storeCode : "未填写";
-    
-    // 使用 JSON 格式发送
-    const requestBody = {
-        storeCode: storeCodeField,
+    // 构造标准的 JSON 对象
+    const requestData = {
+        storeCode: storeCode,
         storeName: storeName,
-        phone: phone,
-        timestamp: now
+        phone: phone
     };
-    
+
     try {
-        console.log('正在提交到 /api/submit...');
-        
+        console.log("正在提交到 /api/submit...");
         const response = await fetch('https://h5.myoracle.us.ci/api/submit', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json;charset=utf-8' // 显式声明为 JSON 格式
             },
-            body: JSON.stringify(requestBody)
+            body: JSON.stringify(requestData) // 将对象序列化为字符串
         });
         
-        // 先获取响应文本，用于调试
-        const responseText = await response.text();
-        console.log('响应状态:', response.status);
-        console.log('响应内容:', responseText);
-        
-        // 尝试解析 JSON
-        let result;
-        try {
-            result = JSON.parse(responseText);
-        } catch (e) {
-            console.error('JSON 解析失败，原始响应:', responseText);
-            throw new Error(`服务器返回了无效的响应格式: ${responseText.substring(0, 100)}`);
-        }
-        
-        if (response.ok && result.success) {
-            showToast("✅ " + result.message);
+        const result = await response.json();
+        if (result.success) {
             return true;
         } else {
-            showToast("❌ " + (result?.message || '提交失败，请重试'), true);
+            showToast("❌ " + result.message, true);
             return false;
         }
     } catch (error) {
         console.error('提交失败:', error);
-        showToast("❌ 网络错误：" + error.message, true);
+        showToast("❌ 网络错误，请稍后重试", true);
         return false;
     }
 }
